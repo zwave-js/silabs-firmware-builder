@@ -159,12 +159,15 @@ jobs:
             device: EFR32ZG14P231F256GM32
             components: brd4201a
             compression: lz4
-            # patchpath: "RCPMultiPAN/Yellow"
+            sign_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_sign.key
+            enc_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_encrypt.key
           - target: BRD4206A
             device: EFR32ZG14P231F256GM32
             components: brd4206a
             compression: lz4
-            # patchpath: "RCPMultiPAN/SkyConnect"
+            sign_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_sign.key
+            enc_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_encrypt.key
+
     uses: ./.github/workflows/silabs-firmware-build-zwave.yaml
     with:
       image_name: ${{ needs.build-container.outputs.image_name }}
@@ -178,4 +181,6 @@ jobs:
       # patchpath: ${{ matrix.patchpath }}
       sdk_version: ${{ needs.build-container.outputs.sdk_version }}
       metadata_fw_type: "zwave"
-      compression: ${{ matrix.compression }}
+      gbl_compression: ${{ matrix.compression }}
+      gbl_sign_key: ${{ matrix.sign_key }}
+      gbl_enc_key: ${{ matrix.enc_key }}

@@ -44,10 +44,16 @@ on:
         required: false
         default: "null"
         type: string
-      compression:
+      gbl_compression:
         required: true
         type: string
-  
+      gbl_sign_key:
+        required: false
+        type: string
+      gbl_enc_key:
+        required: false
+        type: string
+      
 jobs:
   firmware-build:
     name: Build firmware
@@ -120,14 +126,19 @@ jobs:
       - name: Generate gbl Firmware
         run: |
           cd ${{ inputs.firmware_name }}
-          commander gbl create build/release/${{ inputs.project_name }}.gbl \
+          if [ -n "${{ inputs.gbl_sign_key }}" ] ; then
+            SIGN_KEY="--sign ${{ inputs.gbl_sign_key }}"
+          fi
+          if [ -n "${{ inputs.gbl_enc_key }}" ] ; then
+            ENC_KEY="--encrypt ${{ inputs.gbl_enc_key }}"
+          fi
+          commander gbl create build/release/${{ inputs.firmware_name }}.gbl \
                     --app build/release/${{ inputs.project_name }}.hex \
-                    --compress ${{ inputs.compression }}
-                    # --sign?
-                    # --encrypt?
+                    $SIGN_KEY $ENC_KEY \
+                    --compress ${{ inputs.gbl_compression }}
 
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
-          name: ${{ inputs.firmware_name }}.gbl
-          path: ${{ inputs.firmware_name }}/build/release/${{ inputs.project_name }}.gbl
+          # name: ${{ inputs.firmware_name }}.gbl
+          path: ${{ inputs.firmware_name }}/build/release/${{ inputs.firmware_name }}.gbl
