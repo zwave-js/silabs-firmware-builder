@@ -158,7 +158,7 @@ jobs:
             device: EFR32ZG14P231F256GM32
             components: brd4206a
             # patchpath: "RCPMultiPAN/SkyConnect"
-    uses: ./.github/workflows/silabs-firmware-build.yaml
+    uses: ./.github/workflows/silabs-firmware-build-zwave.yaml
     with:
       image_name: ${{ needs.build-container.outputs.image_name }}
       firmware_name: zwave_serial_api_controller_${{ needs.build-container.outputs.sdk_version }}_${{ matrix.target }}

@@ -16,9 +16,6 @@ on:
       project_name:
         required: true
         type: string
-      baudrate:
-        required: true
-        type: number
       device:
         required: true
         type: string
@@ -72,12 +69,6 @@ jobs:
               --copy-proj-sources --copy-sdk-sources --new-project --force \
               --configuration="${{ inputs.configuration }}"
 
-      - name: Set Baudrate
-        run: |
-          cd ${{ inputs.firmware_name }}
-          sed -Ei "s/^(\s*#define SL_\S+_VCOM_BAUDRATE\s+)[0-9]+/\\1${{ inputs.baudrate }}/" \
-              config/sl_*usart_vcom_config.h
-
       - name: Patch Firmware
         if: "${{ inputs.patchpath != '' }}"
         run: |
@@ -97,14 +88,6 @@ jobs:
               echo "Applying ${patch}"
               patch -p1 < $patch
           done
-
-      - name: Patch Makefile
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          LC_TIME=C meta_datetime=$(git log -1 --format="%cd" --date=format:"%b %-d %Y %H:%M:%S")
-          cd ${{ inputs.firmware_name }}
-          sed -i "s/^C_DEFS\s*=.*$/C_DEFS = '-DOPENTHREAD_BUILD_DATETIME=\"$meta_datetime\"' ${{ inputs.extra_c_defs }}/" \
-            "${{ inputs.project_name }}.Makefile"
 
       - name: Build Firmware
         run: |
