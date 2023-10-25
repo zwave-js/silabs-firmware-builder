@@ -44,7 +44,10 @@ on:
         required: false
         default: "null"
         type: string
-
+      compression:
+        required: true
+        type: string
+  
 jobs:
   firmware-build:
     name: Build firmware
@@ -97,7 +100,7 @@ jobs:
           echo "POST_BUILD_EXE = $PWD/${{ inputs.firmware_name }}/postbuild.sh"
           sed -i "s/^C_DEFS\s*=.*$/C_DEFS = ${{ inputs.extra_c_defs }}/" \
             "${{ inputs.project_name }}.Makefile"
-          sed -i 's#^POST_BUILD_EXE_LINUX = .*$#POST_BUILD_EXE_LINUX = echo DONE' \
+          sed -i 's#^POST_BUILD_EXE_LINUX = .*$#POST_BUILD_EXE_LINUX = echo DONE#' \
             "${{ inputs.project_name }}.Makefile"
 
       - name: Build Firmware
@@ -119,7 +122,7 @@ jobs:
           cd ${{ inputs.firmware_name }}
           commander gbl create build/release/${{ inputs.project_name }}.gbl \
                     --app build/release/${{ inputs.project_name }}.hex \
-                    --compress lzma
+                    --compress ${{ inputs.compression }}
                     # --sign?
                     # --encrypt?
 

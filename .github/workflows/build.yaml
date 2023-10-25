@@ -150,14 +150,20 @@ jobs:
     needs: build-container
     strategy:
       matrix:
+        # There are two series of chips, which require different compression and
+        # signing keys:
+        # * Series 1 devices (EFR32xG1x) require lz4 compression and the "sample" keys, unless a custom bootloader is installed
+        # * Series 2 devices (EFR32xG2x) require lzma compression and the "controller" keys
         include:
           - target: BRD4201A
             device: EFR32ZG14P231F256GM32
             components: brd4201a
+            compression: lz4
             # patchpath: "RCPMultiPAN/Yellow"
           - target: BRD4206A
             device: EFR32ZG14P231F256GM32
             components: brd4206a
+            compression: lz4
             # patchpath: "RCPMultiPAN/SkyConnect"
     uses: ./.github/workflows/silabs-firmware-build-zwave.yaml
     with:
@@ -172,3 +178,4 @@ jobs:
       # patchpath: ${{ matrix.patchpath }}
       sdk_version: ${{ needs.build-container.outputs.sdk_version }}
       metadata_fw_type: "zwave"
+      compression: ${{ matrix.compression }}
