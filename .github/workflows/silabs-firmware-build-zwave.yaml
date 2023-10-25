@@ -97,7 +97,7 @@ jobs:
           echo "POST_BUILD_EXE = $PWD/${{ inputs.firmware_name }}/postbuild.sh"
           sed -i "s/^C_DEFS\s*=.*$/C_DEFS = ${{ inputs.extra_c_defs }}/" \
             "${{ inputs.project_name }}.Makefile"
-          sed -i 's#^POST_BUILD_EXE_LINUX = .*$#POST_BUILD_EXE_LINUX = '"$PWD"'/${{ inputs.firmware_name }}/postbuild.sh#' \
+          sed -i 's#^POST_BUILD_EXE_LINUX = .*$#POST_BUILD_EXE_LINUX = '"$PWD"'/postbuild.sh#' \
             "${{ inputs.project_name }}.Makefile"
 
       - name: Build Firmware
@@ -124,5 +124,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
-          name: ${{ inputs.firmware_name }}
-          path: ${{ inputs.firmware_name }}
+          name: ${{ inputs.firmware_name }}.gbl
+          path: ${{ inputs.firmware_name }}/build/release/${{ inputs.project_name }}.gbl
