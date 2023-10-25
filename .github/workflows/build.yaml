@@ -164,7 +164,7 @@ jobs:
       image_name: ${{ needs.build-container.outputs.image_name }}
       firmware_name: zwave_serial_api_controller_${{ needs.build-container.outputs.sdk_version }}_${{ matrix.target }}
       project_file: "/gecko_sdk/protocol/z-wave/Apps/zwave_ncp_serial_api/zwave_ncp_serial_api_controller.slcp"
-      project_name: "zwave_serial_api_controller_${{ matrix.target }}"
+      project_name: "zwave_ncp_serial_api_controller"
       device: ${{ matrix.device }}
       components: ${{ matrix.components }}
       # Fix konw issue 1171840 in Z-Wave SDK
