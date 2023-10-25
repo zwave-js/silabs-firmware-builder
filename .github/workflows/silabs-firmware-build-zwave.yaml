@@ -65,6 +65,7 @@ jobs:
           slc generate \
               --with="${{ inputs.device }},${{ inputs.components }}" \
               --project-file="${{ inputs.project_file }}" \
+              --output-type="makefile" \
               --export-destination="$PWD/${{ inputs.firmware_name }}" \
               --copy-proj-sources --copy-sdk-sources --new-project --force \
               --configuration="${{ inputs.configuration }}"
@@ -88,6 +89,13 @@ jobs:
               echo "Applying ${patch}"
               patch -p1 < $patch
           done
+
+      - name: Patch Makefile
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          cd ${{ inputs.firmware_name }}
+          sed -i "s/^C_DEFS\s*=.*$/C_DEFS = ${{ inputs.extra_c_defs }}/" \
+            "${{ inputs.project_name }}.Makefile"
 
       - name: Build Firmware
         run: |
