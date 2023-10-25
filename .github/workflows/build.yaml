@@ -6,6 +6,7 @@ on:
       - Dockerfile
       - .github/workflows/build.yaml
       - .github/workflows/silabs-firmware-build.yaml
+      - .github/workflows/silabs-firmware-build-zwave.yaml
       # - EmberZNet/**
       # - OpenThreadRCP/**
       # - RCPMultiPAN/**
