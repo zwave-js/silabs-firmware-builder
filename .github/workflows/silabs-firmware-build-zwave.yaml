@@ -94,10 +94,10 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           cd ${{ inputs.firmware_name }}
-          # ls -la
+          echo "POST_BUILD_EXE = $PWD/${{ inputs.firmware_name }}/postbuild.sh"
           sed -i "s/^C_DEFS\s*=.*$/C_DEFS = ${{ inputs.extra_c_defs }}/" \
             "${{ inputs.project_name }}.Makefile"
-          sed -i "s/^POST_BUILD_EXE_LINUX = $/POST_BUILD_EXE_LINUX = postbuild.sh/" \
+          sed -i "s/^POST_BUILD_EXE_LINUX = $/POST_BUILD_EXE_LINUX = $PWD/${{ inputs.firmware_name }}/postbuild.sh/" \
             "${{ inputs.project_name }}.Makefile"
 
       - name: Build Firmware
