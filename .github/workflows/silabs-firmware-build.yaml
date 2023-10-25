@@ -17,8 +17,9 @@ on:
         required: true
         type: string
       baudrate:
-        required: true
+        required: false
         type: number
+        default: 0 # Unchanged
       device:
         required: true
         type: string
@@ -73,6 +74,7 @@ jobs:
               --configuration="${{ inputs.configuration }}"
 
       - name: Set Baudrate
+        if: "${{ inputs.baudrate != 0 }}"
         run: |
           cd ${{ inputs.firmware_name }}
           sed -Ei "s/^(\s*#define SL_\S+_VCOM_BAUDRATE\s+)[0-9]+/\\1${{ inputs.baudrate }}/" \

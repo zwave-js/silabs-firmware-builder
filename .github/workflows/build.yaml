@@ -171,4 +171,3 @@ jobs:
       # patchpath: ${{ matrix.patchpath }}
       sdk_version: ${{ needs.build-container.outputs.sdk_version }}
       metadata_fw_type: "zwave"
-      baudrate: 115200
