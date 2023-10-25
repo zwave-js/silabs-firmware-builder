@@ -152,21 +152,27 @@ jobs:
       matrix:
         # There are two series of chips, which require different compression and
         # signing keys:
-        # * Series 1 devices (EFR32xG1x) require lz4 compression and the "sample" keys, unless a custom bootloader is installed
+        # * Series 1 devices (EFR32xG1x, ZG[M]13) require lz4 compression and the "sample" keys, unless a custom bootloader is installed
         # * Series 2 devices (EFR32xG2x) require lzma compression and the "controller" keys
         include:
           - target: BRD4201A
             device: EFR32ZG14P231F256GM32
             components: brd4201a
             compression: lz4
-            sign_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_sign.key
-            enc_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_encrypt.key
+            sign_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/controller-keys/controller_sign.key
+            enc_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/controller-keys/controller_encrypt.key
           - target: BRD4206A
             device: EFR32ZG14P231F256GM32
             components: brd4206a
             compression: lz4
-            sign_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_sign.key
-            enc_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/sample-keys/sample_encrypt.key
+            sign_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/controller-keys/controller_sign.key
+            enc_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/controller-keys/controller_encrypt.key
+          - target: BRD4207A
+            device: ZGM130S037HGN
+            components: brd4207a
+            compression: lz4
+            sign_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/controller-keys/controller_sign.key
+            enc_key: /gecko_sdk/protocol/z-wave/platform/SiliconLabs/PAL/BootLoader/controller-keys/controller_encrypt.key
 
     uses: ./.github/workflows/silabs-firmware-build-zwave.yaml
     with:
