@@ -97,6 +97,8 @@ jobs:
           # ls -la
           sed -i "s/^C_DEFS\s*=.*$/C_DEFS = ${{ inputs.extra_c_defs }}/" \
             "${{ inputs.project_name }}.Makefile"
+          sed -i "s/^POST_BUILD_EXE_LINUX = $/POST_BUILD_EXE_LINUX = postbuild.sh/" \
+            "${{ inputs.project_name }}.Makefile"
 
       - name: Build Firmware
         run: |
@@ -112,12 +114,12 @@ jobs:
                 "fw_type": "${{ inputs.metadata_fw_type }}"
               } + ${{ inputs.metadata_extra }}' >  version.json
 
-      - name: Generate gbl Firmware
-        run: |
-          cd ${{ inputs.firmware_name }}
-          commander gbl create build/release/${{ inputs.project_name }}.gbl \
-                    --app build/release/${{ inputs.project_name }}.out \
-                    --device ${{ inputs.device }} --metadata version.json
+      # - name: Generate gbl Firmware
+      #   run: |
+      #     cd ${{ inputs.firmware_name }}
+      #     commander gbl create build/release/${{ inputs.project_name }}.gbl \
+      #               --app build/release/${{ inputs.project_name }}.out \
+      #               --device ${{ inputs.device }} --metadata version.json
 
       - uses: actions/upload-artifact@v3
         if: success() || failure()
